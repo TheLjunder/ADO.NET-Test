@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOTest", "ADOTest\ADOTest.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PIServerPodaci", "PIServerPodaci\PIServerPodaci.csproj", "{47046317-3862-4B95-AFBE-86CDBBA3D541}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProvjeraModela", "ProvjeraModela\ProvjeraModela.csproj", "{5E0F57CA-DCA7-466B-AD7F-A391E9A43AC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{47046317-3862-4B95-AFBE-86CDBBA3D541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47046317-3862-4B95-AFBE-86CDBBA3D541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47046317-3862-4B95-AFBE-86CDBBA3D541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E0F57CA-DCA7-466B-AD7F-A391E9A43AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E0F57CA-DCA7-466B-AD7F-A391E9A43AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E0F57CA-DCA7-466B-AD7F-A391E9A43AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E0F57CA-DCA7-466B-AD7F-A391E9A43AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

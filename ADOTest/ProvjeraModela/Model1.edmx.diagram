@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2d315df8afd4424eb87e6f9ead9f7773" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="Model.Dokumentacija" Width="1.5" PointX="2.875" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Eksploziv" Width="1.5" PointX="5.125" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Prijava" Width="1.5" PointX="13" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Projekt" Width="1.5" PointX="7.625" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Rezervacija" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Smjestaj" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="0.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Valuta" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ZaposleniciNaProjektu" Width="1.5" PointX="10" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Zaposlenik" Width="1.5" PointX="7.75" PointY="6.375" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Eksploziv_Projekt" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Projekt" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Rezervacija_Smjestaj" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Smjestaj_Valuta" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Zaposlenik" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.DokumentacijaProjekta" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.ZaposleniciURezervaciji" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
