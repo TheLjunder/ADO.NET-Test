@@ -4,7 +4,18 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Dijelovi">
+          <Key>
+            <PropertyRef Name="IDDijela" />
+          </Key>
+          <Property Name="IDDijela" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDVozila" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="SerijskiBrojDijelova" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="KolicinaDijelova" Type="int" Nullable="false" />
+          <Property Name="NazivDijela" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="DatumKupnje" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Dokumentacija">
           <Key>
             <PropertyRef Name="IDDOkumentacija" />
@@ -26,12 +37,31 @@
           <Key>
             <PropertyRef Name="IDEksploziv" />
           </Key>
-          <Property Name="IDEksploziv" Type="int" Nullable="false" />
-          <Property Name="Oznaka" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Vrsta" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Tezina" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="IDEksploziv" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Oznaka" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vrsta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tezina" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Kolicina" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IDProjekta" Type="int" />
+        </EntityType>
+        <EntityType Name="EksploziviProjekta">
+          <Key>
+            <PropertyRef Name="IDProjekta" />
+            <PropertyRef Name="IDEksploziva" />
+          </Key>
           <Property Name="IDProjekta" Type="int" Nullable="false" />
+          <Property Name="IDEksploziva" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Oprema">
+          <Key>
+            <PropertyRef Name="IDOpreme" />
+          </Key>
+          <Property Name="IDOpreme" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Oib" Type="varchar" MaxLength="15" />
+          <Property Name="NazivOpreme" Type="varchar" MaxLength="30" />
+          <Property Name="DatumKupnje" Type="datetime" />
+          <Property Name="KolicinaOpreme" Type="int" />
         </EntityType>
         <EntityType Name="Prijava">
           <Key>
@@ -49,26 +79,26 @@
           </Key>
           <Property Name="IDprojekta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ImeProjekta" Type="varchar" MaxLength="30" />
-          <Property Name="VoditeljRadilišta" Type="varchar" MaxLength="15" />
+          <Property Name="VoditeljRadilišta" Type="varchar" MaxLength="65" />
         </EntityType>
         <EntityType Name="Rezervacija">
           <Key>
             <PropertyRef Name="IDRezervacija" />
           </Key>
-          <Property Name="IDRezervacija" Type="int" Nullable="false" />
-          <Property Name="IDSmjestaj" Type="int" Nullable="false" />
-          <Property Name="DatumOd" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="IDRezervacija" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSmjestaj" Type="int" />
+          <Property Name="DatumOd" Type="datetime" Nullable="false" />
           <Property Name="DatumDo" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Smjestaj">
           <Key>
             <PropertyRef Name="IDSmjestaj" />
           </Key>
-          <Property Name="IDSmjestaj" Type="int" Nullable="false" />
+          <Property Name="IDSmjestaj" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Naziv" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Lokacija" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CijenaPoOsobi" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="OznakeValute" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="OznakeValute" Type="varchar" MaxLength="3" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -86,7 +116,29 @@
           </Key>
           <Property Name="OznakaValute" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="NazivValute" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Tecaj" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="Tecaj" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VozilaProjekta">
+          <Key>
+            <PropertyRef Name="IDVozila" />
+            <PropertyRef Name="ZaposleniciNaProjektuIDProjekta" />
+            <PropertyRef Name="ZaposleniciNaProjektuOIB" />
+          </Key>
+          <Property Name="IDVozila" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="ZaposleniciNaProjektuIDProjekta" Type="int" Nullable="false" />
+          <Property Name="ZaposleniciNaProjektuOIB" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vozilo">
+          <Key>
+            <PropertyRef Name="IDVozila" />
+          </Key>
+          <Property Name="IDVozila" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="BrojSasije" Type="nchar" MaxLength="17" Nullable="false" />
+          <Property Name="GodinaKupnje" Type="datetime" Nullable="false" />
+          <Property Name="TablicaVozila" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Kilometraza" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="BrojPoliceOsiguranja" Type="int" Nullable="false" />
+          <Property Name="MjesecTehnickogPregleda" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ZaposleniciNaProjektu">
           <Key>
@@ -100,6 +152,7 @@
           <Key>
             <PropertyRef Name="IDRezervacija" />
             <PropertyRef Name="OIB" />
+            <PropertyRef Name="ZaposleniciNaprojektuIDProjekta" />
           </Key>
           <Property Name="IDRezervacija" Type="int" Nullable="false" />
           <Property Name="OIB" Type="varchar" MaxLength="15" Nullable="false" />
@@ -110,11 +163,22 @@
             <PropertyRef Name="Oib" />
           </Key>
           <Property Name="Oib" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="Ime" Type="varchar" MaxLength="30" />
-          <Property Name="Prezime" Type="varchar" MaxLength="30" />
-          <Property Name="Datum" Type="datetime" />
-          <Property Name="Projekt" Type="int" />
+          <Property Name="Ime" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prezime" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Datum" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Dijelovi_Vozilo">
+          <End Role="Vozilo" Type="Self.Vozilo" Multiplicity="1" />
+          <End Role="Dijelovi" Type="Self.Dijelovi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vozilo">
+              <PropertyRef Name="IDVozila" />
+            </Principal>
+            <Dependent Role="Dijelovi">
+              <PropertyRef Name="IDVozila" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DokumentacijaProjekta_Dokumentacija">
           <End Role="Dokumentacija" Type="Self.Dokumentacija" Multiplicity="1" />
           <End Role="DokumentacijaProjekta" Type="Self.DokumentacijaProjekta" Multiplicity="*" />
@@ -139,20 +203,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Eksploziv_Projekt">
+        <Association Name="FK_EksploziviProjekta_Eksploziv">
+          <End Role="Eksploziv" Type="Self.Eksploziv" Multiplicity="1" />
+          <End Role="EksploziviProjekta" Type="Self.EksploziviProjekta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Eksploziv">
+              <PropertyRef Name="IDEksploziv" />
+            </Principal>
+            <Dependent Role="EksploziviProjekta">
+              <PropertyRef Name="IDEksploziva" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EksploziviProjekta_Projekt">
           <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
-          <End Role="Eksploziv" Type="Self.Eksploziv" Multiplicity="*" />
+          <End Role="EksploziviProjekta" Type="Self.EksploziviProjekta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projekt">
               <PropertyRef Name="IDprojekta" />
             </Principal>
-            <Dependent Role="Eksploziv">
+            <Dependent Role="EksploziviProjekta">
               <PropertyRef Name="IDProjekta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Oprema_Zaposlenik">
+          <End Role="Zaposlenik" Type="Self.Zaposlenik" Multiplicity="0..1" />
+          <End Role="Oprema" Type="Self.Oprema" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zaposlenik">
+              <PropertyRef Name="Oib" />
+            </Principal>
+            <Dependent Role="Oprema">
+              <PropertyRef Name="Oib" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Rezervacija_Smjestaj">
-          <End Role="Smjestaj" Type="Self.Smjestaj" Multiplicity="1" />
+          <End Role="Smjestaj" Type="Self.Smjestaj" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Smjestaj">
@@ -164,7 +254,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Smjestaj_Valuta">
-          <End Role="Valuta" Type="Self.Valuta" Multiplicity="1" />
+          <End Role="Valuta" Type="Self.Valuta" Multiplicity="0..1" />
           <End Role="Smjestaj" Type="Self.Smjestaj" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Valuta">
@@ -175,8 +265,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VozilaProjekta_Vozilo">
+          <End Role="Vozilo" Type="Self.Vozilo" Multiplicity="1" />
+          <End Role="VozilaProjekta" Type="Self.VozilaProjekta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vozilo">
+              <PropertyRef Name="IDVozila" />
+            </Principal>
+            <Dependent Role="VozilaProjekta">
+              <PropertyRef Name="IDVozila" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VozilaProjekta_ZaposleniciNaProjektu">
+          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="1" />
+          <End Role="VozilaProjekta" Type="Self.VozilaProjekta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZaposleniciNaProjektu">
+              <PropertyRef Name="OIB" />
+              <PropertyRef Name="IDProjekta" />
+            </Principal>
+            <Dependent Role="VozilaProjekta">
+              <PropertyRef Name="ZaposleniciNaProjektuOIB" />
+              <PropertyRef Name="ZaposleniciNaProjektuIDProjekta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ZaposleniciNaProjektu_Projekt">
-          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
+          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projekt">
@@ -200,7 +318,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ZaposleniciURezervaciji_Rezervacija">
-          <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="1" />
+          <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ZaposleniciURezervaciji" Type="Self.ZaposleniciURezervaciji" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Rezervacija">
@@ -212,7 +332,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ZaposleniciURezervaciji_ZaposleniciNaProjektu">
-          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="1" />
+          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ZaposleniciURezervaciji" Type="Self.ZaposleniciURezervaciji" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ZaposleniciNaProjektu">
@@ -222,6 +344,18 @@
             <Dependent Role="ZaposleniciURezervaciji">
               <PropertyRef Name="OIB" />
               <PropertyRef Name="ZaposleniciNaprojektuIDProjekta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zaposlenik_Zaposlenik">
+          <End Role="Zaposlenik" Type="Self.Zaposlenik" Multiplicity="1" />
+          <End Role="Zaposlenik1" Type="Self.Zaposlenik" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Zaposlenik">
+              <PropertyRef Name="Oib" />
+            </Principal>
+            <Dependent Role="Zaposlenik1">
+              <PropertyRef Name="Oib" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -257,18 +391,27 @@
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Dijelovi" EntityType="Self.Dijelovi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dokumentacija" EntityType="Self.Dokumentacija" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DokumentacijaProjekta" EntityType="Self.DokumentacijaProjekta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Eksploziv" EntityType="Self.Eksploziv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EksploziviProjekta" EntityType="Self.EksploziviProjekta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oprema" EntityType="Self.Oprema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prijava" EntityType="Self.Prijava" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projekt" EntityType="Self.Projekt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rezervacija" EntityType="Self.Rezervacija" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Smjestaj" EntityType="Self.Smjestaj" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Valuta" EntityType="Self.Valuta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VozilaProjekta" EntityType="Self.VozilaProjekta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vozilo" EntityType="Self.Vozilo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ZaposleniciNaProjektu" EntityType="Self.ZaposleniciNaProjektu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ZaposleniciURezervaciji" EntityType="Self.ZaposleniciURezervaciji" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zaposlenik" EntityType="Self.Zaposlenik" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dijelovi_Vozilo" Association="Self.FK_Dijelovi_Vozilo">
+            <End Role="Vozilo" EntitySet="Vozilo" />
+            <End Role="Dijelovi" EntitySet="Dijelovi" />
+          </AssociationSet>
           <AssociationSet Name="FK_DokumentacijaProjekta_Dokumentacija" Association="Self.FK_DokumentacijaProjekta_Dokumentacija">
             <End Role="Dokumentacija" EntitySet="Dokumentacija" />
             <End Role="DokumentacijaProjekta" EntitySet="DokumentacijaProjekta" />
@@ -277,9 +420,17 @@
             <End Role="Projekt" EntitySet="Projekt" />
             <End Role="DokumentacijaProjekta" EntitySet="DokumentacijaProjekta" />
           </AssociationSet>
-          <AssociationSet Name="FK_Eksploziv_Projekt" Association="Self.FK_Eksploziv_Projekt">
-            <End Role="Projekt" EntitySet="Projekt" />
+          <AssociationSet Name="FK_EksploziviProjekta_Eksploziv" Association="Self.FK_EksploziviProjekta_Eksploziv">
             <End Role="Eksploziv" EntitySet="Eksploziv" />
+            <End Role="EksploziviProjekta" EntitySet="EksploziviProjekta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EksploziviProjekta_Projekt" Association="Self.FK_EksploziviProjekta_Projekt">
+            <End Role="Projekt" EntitySet="Projekt" />
+            <End Role="EksploziviProjekta" EntitySet="EksploziviProjekta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oprema_Zaposlenik" Association="Self.FK_Oprema_Zaposlenik">
+            <End Role="Zaposlenik" EntitySet="Zaposlenik" />
+            <End Role="Oprema" EntitySet="Oprema" />
           </AssociationSet>
           <AssociationSet Name="FK_Rezervacija_Smjestaj" Association="Self.FK_Rezervacija_Smjestaj">
             <End Role="Smjestaj" EntitySet="Smjestaj" />
@@ -288,6 +439,14 @@
           <AssociationSet Name="FK_Smjestaj_Valuta" Association="Self.FK_Smjestaj_Valuta">
             <End Role="Valuta" EntitySet="Valuta" />
             <End Role="Smjestaj" EntitySet="Smjestaj" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VozilaProjekta_Vozilo" Association="Self.FK_VozilaProjekta_Vozilo">
+            <End Role="Vozilo" EntitySet="Vozilo" />
+            <End Role="VozilaProjekta" EntitySet="VozilaProjekta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VozilaProjekta_ZaposleniciNaProjektu" Association="Self.FK_VozilaProjekta_ZaposleniciNaProjektu">
+            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektu" />
+            <End Role="VozilaProjekta" EntitySet="VozilaProjekta" />
           </AssociationSet>
           <AssociationSet Name="FK_ZaposleniciNaProjektu_Projekt" Association="Self.FK_ZaposleniciNaProjektu_Projekt">
             <End Role="Projekt" EntitySet="Projekt" />
@@ -305,225 +464,16 @@
             <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektu" />
             <End Role="ZaposleniciURezervaciji" EntitySet="ZaposleniciURezervaciji" />
           </AssociationSet>
+          <AssociationSet Name="FK_Zaposlenik_Zaposlenik" Association="Self.FK_Zaposlenik_Zaposlenik">
+            <End Role="Zaposlenik" EntitySet="Zaposlenik" />
+            <End Role="Zaposlenik1" EntitySet="Zaposlenik" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Dokumentacija">
-          <Key>
-            <PropertyRef Name="IDDOkumentacija" />
-          </Key>
-          <Property Name="IDDOkumentacija" Type="Int32" Nullable="false" />
-          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Rok" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Projekts" Relationship="Self.DokumentacijaProjekta" FromRole="Dokumentacija" ToRole="Projekt" />
-        </EntityType>
-        <EntityType Name="Eksploziv">
-          <Key>
-            <PropertyRef Name="IDEksploziv" />
-          </Key>
-          <Property Name="IDEksploziv" Type="Int32" Nullable="false" />
-          <Property Name="Oznaka" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Vrsta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Tezina" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="IDProjekta" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Projekt" Relationship="Self.FK_Eksploziv_Projekt" FromRole="Eksploziv" ToRole="Projekt" />
-        </EntityType>
-        <EntityType Name="Prijava">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="KorisnickoIme" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Lozinka" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Ime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Prezime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Projekt">
-          <Key>
-            <PropertyRef Name="IDprojekta" />
-          </Key>
-          <Property Name="IDprojekta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ImeProjekta" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="VoditeljRadilišta" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Eksplozivs" Relationship="Self.FK_Eksploziv_Projekt" FromRole="Projekt" ToRole="Eksploziv" />
-          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Self.FK_ZaposleniciNaProjektu_Projekt" FromRole="Projekt" ToRole="ZaposleniciNaProjektu" />
-          <NavigationProperty Name="Dokumentacijas" Relationship="Self.DokumentacijaProjekta" FromRole="Projekt" ToRole="Dokumentacija" />
-        </EntityType>
-        <EntityType Name="Rezervacija">
-          <Key>
-            <PropertyRef Name="IDRezervacija" />
-          </Key>
-          <Property Name="IDRezervacija" Type="Int32" Nullable="false" />
-          <Property Name="IDSmjestaj" Type="Int32" Nullable="false" />
-          <Property Name="DatumOd" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="DatumDo" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Smjestaj" Relationship="Self.FK_Rezervacija_Smjestaj" FromRole="Rezervacija" ToRole="Smjestaj" />
-          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Self.ZaposleniciURezervaciji" FromRole="Rezervacija" ToRole="ZaposleniciNaProjektu" />
-        </EntityType>
-        <EntityType Name="Smjestaj">
-          <Key>
-            <PropertyRef Name="IDSmjestaj" />
-          </Key>
-          <Property Name="IDSmjestaj" Type="Int32" Nullable="false" />
-          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Lokacija" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CijenaPoOsobi" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="OznakeValute" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Rezervacijas" Relationship="Self.FK_Rezervacija_Smjestaj" FromRole="Smjestaj" ToRole="Rezervacija" />
-          <NavigationProperty Name="Valuta" Relationship="Self.FK_Smjestaj_Valuta" FromRole="Smjestaj" ToRole="Valuta" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="Valuta">
-          <Key>
-            <PropertyRef Name="OznakaValute" />
-          </Key>
-          <Property Name="OznakaValute" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NazivValute" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Tecaj" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
-          <NavigationProperty Name="Smjestajs" Relationship="Self.FK_Smjestaj_Valuta" FromRole="Valuta" ToRole="Smjestaj" />
-        </EntityType>
-        <EntityType Name="ZaposleniciNaProjektu">
-          <Key>
-            <PropertyRef Name="OIB" />
-          </Key>
-          <Property Name="IDProjekta" Type="Int32" Nullable="false" />
-          <Property Name="OIB" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Projekt" Relationship="Self.FK_ZaposleniciNaProjektu_Projekt" FromRole="ZaposleniciNaProjektu" ToRole="Projekt" />
-          <NavigationProperty Name="Zaposlenik" Relationship="Self.FK_ZaposleniciNaProjektu_Zaposlenik" FromRole="ZaposleniciNaProjektu" ToRole="Zaposlenik" />
-          <NavigationProperty Name="Rezervacijas" Relationship="Self.ZaposleniciURezervaciji" FromRole="ZaposleniciNaProjektu" ToRole="Rezervacija" />
-        </EntityType>
-        <EntityType Name="Zaposlenik">
-          <Key>
-            <PropertyRef Name="Oib" />
-          </Key>
-          <Property Name="Oib" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Ime" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Prezime" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Datum" Type="DateTime" Precision="3" />
-          <Property Name="Projekt" Type="Int32" />
-          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Self.FK_ZaposleniciNaProjektu_Zaposlenik" FromRole="Zaposlenik" ToRole="ZaposleniciNaProjektu" />
-        </EntityType>
-        <Association Name="FK_Eksploziv_Projekt">
-          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
-          <End Role="Eksploziv" Type="Self.Eksploziv" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projekt">
-              <PropertyRef Name="IDprojekta" />
-            </Principal>
-            <Dependent Role="Eksploziv">
-              <PropertyRef Name="IDProjekta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ZaposleniciNaProjektu_Projekt">
-          <End Role="Projekt" Type="Self.Projekt" Multiplicity="1" />
-          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projekt">
-              <PropertyRef Name="IDprojekta" />
-            </Principal>
-            <Dependent Role="ZaposleniciNaProjektu">
-              <PropertyRef Name="IDProjekta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Rezervacija_Smjestaj">
-          <End Role="Smjestaj" Type="Self.Smjestaj" Multiplicity="1" />
-          <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Smjestaj">
-              <PropertyRef Name="IDSmjestaj" />
-            </Principal>
-            <Dependent Role="Rezervacija">
-              <PropertyRef Name="IDSmjestaj" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Smjestaj_Valuta">
-          <End Role="Valuta" Type="Self.Valuta" Multiplicity="1" />
-          <End Role="Smjestaj" Type="Self.Smjestaj" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Valuta">
-              <PropertyRef Name="OznakaValute" />
-            </Principal>
-            <Dependent Role="Smjestaj">
-              <PropertyRef Name="OznakeValute" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ZaposleniciNaProjektu_Zaposlenik">
-          <End Role="Zaposlenik" Type="Self.Zaposlenik" Multiplicity="1" />
-          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Zaposlenik">
-              <PropertyRef Name="Oib" />
-            </Principal>
-            <Dependent Role="ZaposleniciNaProjektu">
-              <PropertyRef Name="OIB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="DokumentacijaProjekta">
-          <End Role="Dokumentacija" Type="Self.Dokumentacija" Multiplicity="*" />
-          <End Role="Projekt" Type="Self.Projekt" Multiplicity="*" />
-        </Association>
-        <Association Name="ZaposleniciURezervaciji">
-          <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="*" />
-          <End Role="ZaposleniciNaProjektu" Type="Self.ZaposleniciNaProjektu" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Dokumentacijas" EntityType="Self.Dokumentacija" />
-          <EntitySet Name="Eksplozivs" EntityType="Self.Eksploziv" />
-          <EntitySet Name="Prijavas" EntityType="Self.Prijava" />
-          <EntitySet Name="Projekts" EntityType="Self.Projekt" />
-          <EntitySet Name="Rezervacijas" EntityType="Self.Rezervacija" />
-          <EntitySet Name="Smjestajs" EntityType="Self.Smjestaj" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Valutas" EntityType="Self.Valuta" />
-          <EntitySet Name="ZaposleniciNaProjektus" EntityType="Self.ZaposleniciNaProjektu" />
-          <EntitySet Name="Zaposleniks" EntityType="Self.Zaposlenik" />
-          <AssociationSet Name="FK_Eksploziv_Projekt" Association="Self.FK_Eksploziv_Projekt">
-            <End Role="Projekt" EntitySet="Projekts" />
-            <End Role="Eksploziv" EntitySet="Eksplozivs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ZaposleniciNaProjektu_Projekt" Association="Self.FK_ZaposleniciNaProjektu_Projekt">
-            <End Role="Projekt" EntitySet="Projekts" />
-            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Rezervacija_Smjestaj" Association="Self.FK_Rezervacija_Smjestaj">
-            <End Role="Smjestaj" EntitySet="Smjestajs" />
-            <End Role="Rezervacija" EntitySet="Rezervacijas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Smjestaj_Valuta" Association="Self.FK_Smjestaj_Valuta">
-            <End Role="Valuta" EntitySet="Valutas" />
-            <End Role="Smjestaj" EntitySet="Smjestajs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ZaposleniciNaProjektu_Zaposlenik" Association="Self.FK_ZaposleniciNaProjektu_Zaposlenik">
-            <End Role="Zaposlenik" EntitySet="Zaposleniks" />
-            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
-          </AssociationSet>
-          <AssociationSet Name="DokumentacijaProjekta" Association="Self.DokumentacijaProjekta">
-            <End Role="Dokumentacija" EntitySet="Dokumentacijas" />
-            <End Role="Projekt" EntitySet="Projekts" />
-          </AssociationSet>
-          <AssociationSet Name="ZaposleniciURezervaciji" Association="Self.ZaposleniciURezervaciji">
-            <End Role="Rezervacija" EntitySet="Rezervacijas" />
-            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
-          </AssociationSet>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -554,6 +504,63 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Dijelovis" EntityType="Model.Dijelovi" />
+          <EntitySet Name="Dokumentacijas" EntityType="Model.Dokumentacija" />
+          <EntitySet Name="Eksplozivs" EntityType="Model.Eksploziv" />
+          <EntitySet Name="Opremas" EntityType="Model.Oprema" />
+          <EntitySet Name="Prijavas" EntityType="Model.Prijava" />
+          <EntitySet Name="Projekts" EntityType="Model.Projekt" />
+          <EntitySet Name="Rezervacijas" EntityType="Model.Rezervacija" />
+          <EntitySet Name="Smjestajs" EntityType="Model.Smjestaj" />
+          <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagram" />
+          <EntitySet Name="Valutas" EntityType="Model.Valuta" />
+          <EntitySet Name="Voziloes" EntityType="Model.Vozilo" />
+          <EntitySet Name="ZaposleniciNaProjektus" EntityType="Model.ZaposleniciNaProjektu" />
+          <EntitySet Name="Zaposleniks" EntityType="Model.Zaposlenik" />
+          <AssociationSet Name="FK_Dijelovi_Vozilo" Association="Model.FK_Dijelovi_Vozilo">
+            <End Role="Vozilo" EntitySet="Voziloes" />
+            <End Role="Dijelovi" EntitySet="Dijelovis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oprema_Zaposlenik" Association="Model.FK_Oprema_Zaposlenik">
+            <End Role="Zaposlenik" EntitySet="Zaposleniks" />
+            <End Role="Oprema" EntitySet="Opremas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaposleniciNaProjektu_Projekt" Association="Model.FK_ZaposleniciNaProjektu_Projekt">
+            <End Role="Projekt" EntitySet="Projekts" />
+            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rezervacija_Smjestaj" Association="Model.FK_Rezervacija_Smjestaj">
+            <End Role="Smjestaj" EntitySet="Smjestajs" />
+            <End Role="Rezervacija" EntitySet="Rezervacijas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Smjestaj_Valuta" Association="Model.FK_Smjestaj_Valuta">
+            <End Role="Valuta" EntitySet="Valutas" />
+            <End Role="Smjestaj" EntitySet="Smjestajs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaposleniciNaProjektu_Zaposlenik" Association="Model.FK_ZaposleniciNaProjektu_Zaposlenik">
+            <End Role="Zaposlenik" EntitySet="Zaposleniks" />
+            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zaposlenik_Zaposlenik" Association="Model.FK_Zaposlenik_Zaposlenik">
+            <End Role="Zaposlenik" EntitySet="Zaposleniks" />
+            <End Role="Zaposlenik1" EntitySet="Zaposleniks" />
+          </AssociationSet>
+          <AssociationSet Name="DokumentacijaProjekta" Association="Model.DokumentacijaProjekta">
+            <End Role="Dokumentacija" EntitySet="Dokumentacijas" />
+            <End Role="Projekt" EntitySet="Projekts" />
+          </AssociationSet>
+          <AssociationSet Name="EksploziviProjekta" Association="Model.EksploziviProjekta">
+            <End Role="Eksploziv" EntitySet="Eksplozivs" />
+            <End Role="Projekt" EntitySet="Projekts" />
+          </AssociationSet>
+          <AssociationSet Name="VozilaProjekta" Association="Model.VozilaProjekta">
+            <End Role="Vozilo" EntitySet="Voziloes" />
+            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
+          </AssociationSet>
+          <AssociationSet Name="ZaposleniciURezervaciji" Association="Model.ZaposleniciURezervaciji">
+            <End Role="Rezervacija" EntitySet="Rezervacijas" />
+            <End Role="ZaposleniciNaProjektu" EntitySet="ZaposleniciNaProjektus" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -566,131 +573,264 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Dijelovi">
+          <Key>
+            <PropertyRef Name="IDDijela" />
+          </Key>
+          <Property Name="IDDijela" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDVozila" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SerijskiBrojDijelova" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="KolicinaDijelova" Type="Int32" Nullable="false" />
+          <Property Name="NazivDijela" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DatumKupnje" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Vozilo" Relationship="Model.FK_Dijelovi_Vozilo" FromRole="Dijelovi" ToRole="Vozilo" />
+        </EntityType>
+        <EntityType Name="Dokumentacija">
+          <Key>
+            <PropertyRef Name="IDDOkumentacija" />
+          </Key>
+          <Property Name="IDDOkumentacija" Type="Int32" Nullable="false" />
+          <Property Name="Naziv" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Rok" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Projekts" Relationship="Model.DokumentacijaProjekta" FromRole="Dokumentacija" ToRole="Projekt" />
+        </EntityType>
+        <EntityType Name="Eksploziv">
+          <Key>
+            <PropertyRef Name="IDEksploziv" />
+          </Key>
+          <Property Name="IDEksploziv" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Oznaka" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Vrsta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tezina" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Kolicina" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IDProjekta" Type="Int32" />
+          <NavigationProperty Name="Projekts" Relationship="Model.EksploziviProjekta" FromRole="Eksploziv" ToRole="Projekt" />
+        </EntityType>
+        <EntityType Name="Oprema">
+          <Key>
+            <PropertyRef Name="IDOpreme" />
+          </Key>
+          <Property Name="IDOpreme" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Oib" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="NazivOpreme" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DatumKupnje" Type="DateTime" Precision="3" />
+          <Property Name="KolicinaOpreme" Type="Int32" />
+          <NavigationProperty Name="Zaposlenik" Relationship="Model.FK_Oprema_Zaposlenik" FromRole="Oprema" ToRole="Zaposlenik" />
+        </EntityType>
+        <EntityType Name="Prijava">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lozinka" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Prezime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Projekt">
+          <Key>
+            <PropertyRef Name="IDprojekta" />
+          </Key>
+          <Property Name="IDprojekta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImeProjekta" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VoditeljRadilišta" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Model.FK_ZaposleniciNaProjektu_Projekt" FromRole="Projekt" ToRole="ZaposleniciNaProjektu" />
+          <NavigationProperty Name="Dokumentacijas" Relationship="Model.DokumentacijaProjekta" FromRole="Projekt" ToRole="Dokumentacija" />
+          <NavigationProperty Name="Eksplozivs" Relationship="Model.EksploziviProjekta" FromRole="Projekt" ToRole="Eksploziv" />
+        </EntityType>
+        <EntityType Name="Rezervacija">
+          <Key>
+            <PropertyRef Name="IDRezervacija" />
+          </Key>
+          <Property Name="IDRezervacija" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSmjestaj" Type="Int32" />
+          <Property Name="DatumOd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DatumDo" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Smjestaj" Relationship="Model.FK_Rezervacija_Smjestaj" FromRole="Rezervacija" ToRole="Smjestaj" />
+          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Model.ZaposleniciURezervaciji" FromRole="Rezervacija" ToRole="ZaposleniciNaProjektu" />
+        </EntityType>
+        <EntityType Name="Smjestaj">
+          <Key>
+            <PropertyRef Name="IDSmjestaj" />
+          </Key>
+          <Property Name="IDSmjestaj" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lokacija" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CijenaPoOsobi" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="OznakeValute" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rezervacijas" Relationship="Model.FK_Rezervacija_Smjestaj" FromRole="Smjestaj" ToRole="Rezervacija" />
+          <NavigationProperty Name="Valuta" Relationship="Model.FK_Smjestaj_Valuta" FromRole="Smjestaj" ToRole="Valuta" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Valuta">
+          <Key>
+            <PropertyRef Name="OznakaValute" />
+          </Key>
+          <Property Name="OznakaValute" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="NazivValute" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Tecaj" Type="Decimal" Nullable="false" Precision="3" Scale="2" />
+          <NavigationProperty Name="Smjestajs" Relationship="Model.FK_Smjestaj_Valuta" FromRole="Valuta" ToRole="Smjestaj" />
+        </EntityType>
+        <EntityType Name="Vozilo">
+          <Key>
+            <PropertyRef Name="IDVozila" />
+          </Key>
+          <Property Name="IDVozila" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="BrojSasije" Type="String" Nullable="false" MaxLength="17" FixedLength="true" Unicode="true" />
+          <Property Name="GodinaKupnje" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TablicaVozila" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Kilometraza" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="BrojPoliceOsiguranja" Type="Int32" Nullable="false" />
+          <Property Name="MjesecTehnickogPregleda" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dijelovis" Relationship="Model.FK_Dijelovi_Vozilo" FromRole="Vozilo" ToRole="Dijelovi" />
+          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Model.VozilaProjekta" FromRole="Vozilo" ToRole="ZaposleniciNaProjektu" />
+        </EntityType>
+        <EntityType Name="ZaposleniciNaProjektu">
+          <Key>
+            <PropertyRef Name="IDProjekta" />
+            <PropertyRef Name="OIB" />
+          </Key>
+          <Property Name="IDProjekta" Type="Int32" Nullable="false" />
+          <Property Name="OIB" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Projekt" Relationship="Model.FK_ZaposleniciNaProjektu_Projekt" FromRole="ZaposleniciNaProjektu" ToRole="Projekt" />
+          <NavigationProperty Name="Zaposlenik" Relationship="Model.FK_ZaposleniciNaProjektu_Zaposlenik" FromRole="ZaposleniciNaProjektu" ToRole="Zaposlenik" />
+          <NavigationProperty Name="Voziloes" Relationship="Model.VozilaProjekta" FromRole="ZaposleniciNaProjektu" ToRole="Vozilo" />
+          <NavigationProperty Name="Rezervacijas" Relationship="Model.ZaposleniciURezervaciji" FromRole="ZaposleniciNaProjektu" ToRole="Rezervacija" />
+        </EntityType>
+        <EntityType Name="Zaposlenik">
+          <Key>
+            <PropertyRef Name="Oib" />
+          </Key>
+          <Property Name="Oib" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Prezime" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Datum" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Opremas" Relationship="Model.FK_Oprema_Zaposlenik" FromRole="Zaposlenik" ToRole="Oprema" />
+          <NavigationProperty Name="ZaposleniciNaProjektus" Relationship="Model.FK_ZaposleniciNaProjektu_Zaposlenik" FromRole="Zaposlenik" ToRole="ZaposleniciNaProjektu" />
+          <NavigationProperty Name="Zaposlenik1" Relationship="Model.FK_Zaposlenik_Zaposlenik" FromRole="Zaposlenik" ToRole="Zaposlenik1" />
+          <NavigationProperty Name="Zaposlenik2" Relationship="Model.FK_Zaposlenik_Zaposlenik" FromRole="Zaposlenik1" ToRole="Zaposlenik" />
+        </EntityType>
+        <Association Name="FK_Dijelovi_Vozilo">
+          <End Type="Model.Vozilo" Role="Vozilo" Multiplicity="1" />
+          <End Type="Model.Dijelovi" Role="Dijelovi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vozilo">
+              <PropertyRef Name="IDVozila" />
+            </Principal>
+            <Dependent Role="Dijelovi">
+              <PropertyRef Name="IDVozila" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oprema_Zaposlenik">
+          <End Type="Model.Zaposlenik" Role="Zaposlenik" Multiplicity="0..1" />
+          <End Type="Model.Oprema" Role="Oprema" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zaposlenik">
+              <PropertyRef Name="Oib" />
+            </Principal>
+            <Dependent Role="Oprema">
+              <PropertyRef Name="Oib" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaposleniciNaProjektu_Projekt">
+          <End Type="Model.Projekt" Role="Projekt" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.ZaposleniciNaProjektu" Role="ZaposleniciNaProjektu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projekt">
+              <PropertyRef Name="IDprojekta" />
+            </Principal>
+            <Dependent Role="ZaposleniciNaProjektu">
+              <PropertyRef Name="IDProjekta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rezervacija_Smjestaj">
+          <End Type="Model.Smjestaj" Role="Smjestaj" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.Rezervacija" Role="Rezervacija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Smjestaj">
+              <PropertyRef Name="IDSmjestaj" />
+            </Principal>
+            <Dependent Role="Rezervacija">
+              <PropertyRef Name="IDSmjestaj" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Smjestaj_Valuta">
+          <End Type="Model.Valuta" Role="Valuta" Multiplicity="0..1" />
+          <End Type="Model.Smjestaj" Role="Smjestaj" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Valuta">
+              <PropertyRef Name="OznakaValute" />
+            </Principal>
+            <Dependent Role="Smjestaj">
+              <PropertyRef Name="OznakeValute" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaposleniciNaProjektu_Zaposlenik">
+          <End Type="Model.Zaposlenik" Role="Zaposlenik" Multiplicity="1" />
+          <End Type="Model.ZaposleniciNaProjektu" Role="ZaposleniciNaProjektu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zaposlenik">
+              <PropertyRef Name="Oib" />
+            </Principal>
+            <Dependent Role="ZaposleniciNaProjektu">
+              <PropertyRef Name="OIB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zaposlenik_Zaposlenik">
+          <End Type="Model.Zaposlenik" Role="Zaposlenik" Multiplicity="1" />
+          <End Type="Model.Zaposlenik" Role="Zaposlenik1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Zaposlenik">
+              <PropertyRef Name="Oib" />
+            </Principal>
+            <Dependent Role="Zaposlenik1">
+              <PropertyRef Name="Oib" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DokumentacijaProjekta">
+          <End Type="Model.Dokumentacija" Role="Dokumentacija" Multiplicity="*" />
+          <End Type="Model.Projekt" Role="Projekt" Multiplicity="*" />
+        </Association>
+        <Association Name="EksploziviProjekta">
+          <End Type="Model.Eksploziv" Role="Eksploziv" Multiplicity="*" />
+          <End Type="Model.Projekt" Role="Projekt" Multiplicity="*" />
+        </Association>
+        <Association Name="VozilaProjekta">
+          <End Type="Model.Vozilo" Role="Vozilo" Multiplicity="*" />
+          <End Type="Model.ZaposleniciNaProjektu" Role="ZaposleniciNaProjektu" Multiplicity="*" />
+        </Association>
+        <Association Name="ZaposleniciURezervaciji">
+          <End Type="Model.Rezervacija" Role="Rezervacija" Multiplicity="*" />
+          <End Type="Model.ZaposleniciNaProjektu" Role="ZaposleniciNaProjektu" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="Dokumentacijas">
-            <EntityTypeMapping TypeName="Model.Dokumentacija">
-              <MappingFragment StoreEntitySet="Dokumentacija">
-                <ScalarProperty Name="IDDOkumentacija" ColumnName="IDDOkumentacija" />
-                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
-                <ScalarProperty Name="Rok" ColumnName="Rok" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Eksplozivs">
-            <EntityTypeMapping TypeName="Model.Eksploziv">
-              <MappingFragment StoreEntitySet="Eksploziv">
-                <ScalarProperty Name="IDEksploziv" ColumnName="IDEksploziv" />
-                <ScalarProperty Name="Oznaka" ColumnName="Oznaka" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Vrsta" ColumnName="Vrsta" />
-                <ScalarProperty Name="Tezina" ColumnName="Tezina" />
-                <ScalarProperty Name="IDProjekta" ColumnName="IDProjekta" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Prijavas">
-            <EntityTypeMapping TypeName="Model.Prijava">
-              <MappingFragment StoreEntitySet="Prijava">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="KorisnickoIme" ColumnName="KorisnickoIme" />
-                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
-                <ScalarProperty Name="Ime" ColumnName="Ime" />
-                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Projekts">
-            <EntityTypeMapping TypeName="Model.Projekt">
-              <MappingFragment StoreEntitySet="Projekt">
-                <ScalarProperty Name="IDprojekta" ColumnName="IDprojekta" />
-                <ScalarProperty Name="ImeProjekta" ColumnName="ImeProjekta" />
-                <ScalarProperty Name="VoditeljRadilišta" ColumnName="VoditeljRadilišta" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Rezervacijas">
-            <EntityTypeMapping TypeName="Model.Rezervacija">
-              <MappingFragment StoreEntitySet="Rezervacija">
-                <ScalarProperty Name="IDRezervacija" ColumnName="IDRezervacija" />
-                <ScalarProperty Name="IDSmjestaj" ColumnName="IDSmjestaj" />
-                <ScalarProperty Name="DatumOd" ColumnName="DatumOd" />
-                <ScalarProperty Name="DatumDo" ColumnName="DatumDo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Smjestajs">
-            <EntityTypeMapping TypeName="Model.Smjestaj">
-              <MappingFragment StoreEntitySet="Smjestaj">
-                <ScalarProperty Name="IDSmjestaj" ColumnName="IDSmjestaj" />
-                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
-                <ScalarProperty Name="Lokacija" ColumnName="Lokacija" />
-                <ScalarProperty Name="CijenaPoOsobi" ColumnName="CijenaPoOsobi" />
-                <ScalarProperty Name="OznakeValute" ColumnName="OznakeValute" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="Model.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Valutas">
-            <EntityTypeMapping TypeName="Model.Valuta">
-              <MappingFragment StoreEntitySet="Valuta">
-                <ScalarProperty Name="OznakaValute" ColumnName="OznakaValute" />
-                <ScalarProperty Name="NazivValute" ColumnName="NazivValute" />
-                <ScalarProperty Name="Tecaj" ColumnName="Tecaj" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ZaposleniciNaProjektus">
-            <EntityTypeMapping TypeName="Model.ZaposleniciNaProjektu">
-              <MappingFragment StoreEntitySet="ZaposleniciNaProjektu">
-                <ScalarProperty Name="IDProjekta" ColumnName="IDProjekta" />
-                <ScalarProperty Name="OIB" ColumnName="OIB" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Zaposleniks">
-            <EntityTypeMapping TypeName="Model.Zaposlenik">
-              <MappingFragment StoreEntitySet="Zaposlenik">
-                <ScalarProperty Name="Oib" ColumnName="Oib" />
-                <ScalarProperty Name="Ime" ColumnName="Ime" />
-                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
-                <ScalarProperty Name="Datum" ColumnName="Datum" />
-                <ScalarProperty Name="Projekt" ColumnName="Projekt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="DokumentacijaProjekta" TypeName="Model.DokumentacijaProjekta" StoreEntitySet="DokumentacijaProjekta">
-            <EndProperty Name="Dokumentacija">
-              <ScalarProperty Name="IDDOkumentacija" ColumnName="IDDokumentacija" />
-            </EndProperty>
-            <EndProperty Name="Projekt">
-              <ScalarProperty Name="IDprojekta" ColumnName="IDProjekta" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ZaposleniciURezervaciji" TypeName="Model.ZaposleniciURezervaciji" StoreEntitySet="ZaposleniciURezervaciji">
-            <EndProperty Name="Rezervacija">
-              <ScalarProperty Name="IDRezervacija" ColumnName="IDRezervacija" />
-            </EndProperty>
-            <EndProperty Name="ZaposleniciNaProjektu">
-              <ScalarProperty Name="IDProjekta" ColumnName="ZaposleniciNaprojektuIDProjekta" />
-              <ScalarProperty Name="OIB" ColumnName="OIB" />
-            </EndProperty>
-          </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Model.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Model.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Model.Store.sp_dropdiagram" />
@@ -715,6 +855,178 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="Dijelovis">
+            <EntityTypeMapping TypeName="Model.Dijelovi">
+              <MappingFragment StoreEntitySet="Dijelovi">
+                <ScalarProperty Name="DatumKupnje" ColumnName="DatumKupnje" />
+                <ScalarProperty Name="NazivDijela" ColumnName="NazivDijela" />
+                <ScalarProperty Name="KolicinaDijelova" ColumnName="KolicinaDijelova" />
+                <ScalarProperty Name="SerijskiBrojDijelova" ColumnName="SerijskiBrojDijelova" />
+                <ScalarProperty Name="IDVozila" ColumnName="IDVozila" />
+                <ScalarProperty Name="IDDijela" ColumnName="IDDijela" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dokumentacijas">
+            <EntityTypeMapping TypeName="Model.Dokumentacija">
+              <MappingFragment StoreEntitySet="Dokumentacija">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Rok" ColumnName="Rok" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="IDDOkumentacija" ColumnName="IDDOkumentacija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Eksplozivs">
+            <EntityTypeMapping TypeName="Model.Eksploziv">
+              <MappingFragment StoreEntitySet="Eksploziv">
+                <ScalarProperty Name="IDProjekta" ColumnName="IDProjekta" />
+                <ScalarProperty Name="Kolicina" ColumnName="Kolicina" />
+                <ScalarProperty Name="Tezina" ColumnName="Tezina" />
+                <ScalarProperty Name="Vrsta" ColumnName="Vrsta" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Oznaka" ColumnName="Oznaka" />
+                <ScalarProperty Name="IDEksploziv" ColumnName="IDEksploziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Opremas">
+            <EntityTypeMapping TypeName="Model.Oprema">
+              <MappingFragment StoreEntitySet="Oprema">
+                <ScalarProperty Name="KolicinaOpreme" ColumnName="KolicinaOpreme" />
+                <ScalarProperty Name="DatumKupnje" ColumnName="DatumKupnje" />
+                <ScalarProperty Name="NazivOpreme" ColumnName="NazivOpreme" />
+                <ScalarProperty Name="Oib" ColumnName="Oib" />
+                <ScalarProperty Name="IDOpreme" ColumnName="IDOpreme" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prijavas">
+            <EntityTypeMapping TypeName="Model.Prijava">
+              <MappingFragment StoreEntitySet="Prijava">
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="KorisnickoIme" ColumnName="KorisnickoIme" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projekts">
+            <EntityTypeMapping TypeName="Model.Projekt">
+              <MappingFragment StoreEntitySet="Projekt">
+                <ScalarProperty Name="VoditeljRadilišta" ColumnName="VoditeljRadilišta" />
+                <ScalarProperty Name="ImeProjekta" ColumnName="ImeProjekta" />
+                <ScalarProperty Name="IDprojekta" ColumnName="IDprojekta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rezervacijas">
+            <EntityTypeMapping TypeName="Model.Rezervacija">
+              <MappingFragment StoreEntitySet="Rezervacija">
+                <ScalarProperty Name="DatumDo" ColumnName="DatumDo" />
+                <ScalarProperty Name="DatumOd" ColumnName="DatumOd" />
+                <ScalarProperty Name="IDSmjestaj" ColumnName="IDSmjestaj" />
+                <ScalarProperty Name="IDRezervacija" ColumnName="IDRezervacija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Smjestajs">
+            <EntityTypeMapping TypeName="Model.Smjestaj">
+              <MappingFragment StoreEntitySet="Smjestaj">
+                <ScalarProperty Name="OznakeValute" ColumnName="OznakeValute" />
+                <ScalarProperty Name="CijenaPoOsobi" ColumnName="CijenaPoOsobi" />
+                <ScalarProperty Name="Lokacija" ColumnName="Lokacija" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="IDSmjestaj" ColumnName="IDSmjestaj" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Valutas">
+            <EntityTypeMapping TypeName="Model.Valuta">
+              <MappingFragment StoreEntitySet="Valuta">
+                <ScalarProperty Name="Tecaj" ColumnName="Tecaj" />
+                <ScalarProperty Name="NazivValute" ColumnName="NazivValute" />
+                <ScalarProperty Name="OznakaValute" ColumnName="OznakaValute" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Voziloes">
+            <EntityTypeMapping TypeName="Model.Vozilo">
+              <MappingFragment StoreEntitySet="Vozilo">
+                <ScalarProperty Name="MjesecTehnickogPregleda" ColumnName="MjesecTehnickogPregleda" />
+                <ScalarProperty Name="BrojPoliceOsiguranja" ColumnName="BrojPoliceOsiguranja" />
+                <ScalarProperty Name="Kilometraza" ColumnName="Kilometraza" />
+                <ScalarProperty Name="TablicaVozila" ColumnName="TablicaVozila" />
+                <ScalarProperty Name="GodinaKupnje" ColumnName="GodinaKupnje" />
+                <ScalarProperty Name="BrojSasije" ColumnName="BrojSasije" />
+                <ScalarProperty Name="IDVozila" ColumnName="IDVozila" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ZaposleniciNaProjektus">
+            <EntityTypeMapping TypeName="Model.ZaposleniciNaProjektu">
+              <MappingFragment StoreEntitySet="ZaposleniciNaProjektu">
+                <ScalarProperty Name="OIB" ColumnName="OIB" />
+                <ScalarProperty Name="IDProjekta" ColumnName="IDProjekta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zaposleniks">
+            <EntityTypeMapping TypeName="Model.Zaposlenik">
+              <MappingFragment StoreEntitySet="Zaposlenik">
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Oib" ColumnName="Oib" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="DokumentacijaProjekta" TypeName="Model.DokumentacijaProjekta" StoreEntitySet="DokumentacijaProjekta">
+            <EndProperty Name="Projekt">
+              <ScalarProperty Name="IDprojekta" ColumnName="IDProjekta" />
+            </EndProperty>
+            <EndProperty Name="Dokumentacija">
+              <ScalarProperty Name="IDDOkumentacija" ColumnName="IDDokumentacija" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="EksploziviProjekta" TypeName="Model.EksploziviProjekta" StoreEntitySet="EksploziviProjekta">
+            <EndProperty Name="Projekt">
+              <ScalarProperty Name="IDprojekta" ColumnName="IDProjekta" />
+            </EndProperty>
+            <EndProperty Name="Eksploziv">
+              <ScalarProperty Name="IDEksploziv" ColumnName="IDEksploziva" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="VozilaProjekta" TypeName="Model.VozilaProjekta" StoreEntitySet="VozilaProjekta">
+            <EndProperty Name="ZaposleniciNaProjektu">
+              <ScalarProperty Name="OIB" ColumnName="ZaposleniciNaProjektuOIB" />
+              <ScalarProperty Name="IDProjekta" ColumnName="ZaposleniciNaProjektuIDProjekta" />
+            </EndProperty>
+            <EndProperty Name="Vozilo">
+              <ScalarProperty Name="IDVozila" ColumnName="IDVozila" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ZaposleniciURezervaciji" TypeName="Model.ZaposleniciURezervaciji" StoreEntitySet="ZaposleniciURezervaciji">
+            <EndProperty Name="ZaposleniciNaProjektu">
+              <ScalarProperty Name="OIB" ColumnName="OIB" />
+              <ScalarProperty Name="IDProjekta" ColumnName="ZaposleniciNaprojektuIDProjekta" />
+            </EndProperty>
+            <EndProperty Name="Rezervacija">
+              <ScalarProperty Name="IDRezervacija" ColumnName="IDRezervacija" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

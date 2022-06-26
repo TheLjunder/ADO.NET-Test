@@ -5,23 +5,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2d315df8afd4424eb87e6f9ead9f7773" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="Model.Dokumentacija" Width="1.5" PointX="2.875" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Eksploziv" Width="1.5" PointX="5.125" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Prijava" Width="1.5" PointX="13" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Projekt" Width="1.5" PointX="7.625" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Rezervacija" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Smjestaj" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="0.5" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Valuta" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ZaposleniciNaProjektu" Width="1.5" PointX="10" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Zaposlenik" Width="1.5" PointX="7.75" PointY="6.375" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_Eksploziv_Projekt" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Projekt" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Rezervacija_Smjestaj" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Smjestaj_Valuta" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Zaposlenik" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.DokumentacijaProjekta" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.ZaposleniciURezervaciji" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.Dijelovi" Width="1.5" PointX="3" PointY="9.375" />
+        <EntityTypeShape EntityType="Model.Dokumentacija" Width="1.5" PointX="1.5" PointY="15.625" />
+        <EntityTypeShape EntityType="Model.Eksploziv" Width="1.5" PointX="1.5" PointY="18.375" />
+        <EntityTypeShape EntityType="Model.Oprema" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="Model.Prijava" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Projekt" Width="1.5" PointX="0.75" PointY="12.125" />
+        <EntityTypeShape EntityType="Model.Rezervacija" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.Smjestaj" Width="1.5" PointX="1.5" PointY="25.625" />
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="5.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.Valuta" Width="1.5" PointX="1.5" PointY="29" />
+        <EntityTypeShape EntityType="Model.Vozilo" Width="1.5" PointX="0.75" PointY="7.125" />
+        <EntityTypeShape EntityType="Model.ZaposleniciNaProjektu" Width="1.5" PointX="3" PointY="2.5" />
+        <EntityTypeShape EntityType="Model.Zaposlenik" Width="1.5" PointX="0.75" PointY="2.375" />
+        <AssociationConnector Association="Model.FK_Dijelovi_Vozilo" />
+        <AssociationConnector Association="Model.FK_Oprema_Zaposlenik" />
+        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Projekt" />
+        <AssociationConnector Association="Model.FK_Rezervacija_Smjestaj" />
+        <AssociationConnector Association="Model.FK_Smjestaj_Valuta" />
+        <AssociationConnector Association="Model.FK_ZaposleniciNaProjektu_Zaposlenik" />
+        <AssociationConnector Association="Model.FK_Zaposlenik_Zaposlenik" />
+        <AssociationConnector Association="Model.DokumentacijaProjekta" />
+        <AssociationConnector Association="Model.EksploziviProjekta" />
+        <AssociationConnector Association="Model.VozilaProjekta" />
+        <AssociationConnector Association="Model.ZaposleniciURezervaciji" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
